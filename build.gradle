@@ -1,0 +1,42 @@
+plugins {
+    id 'java'
+}
+
+group = 'challenge'
+version = '1.0'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    testImplementation platform('org.junit:junit-bom:5.11.0')
+    testImplementation 'org.junit.jupiter:junit-jupiter'
+    testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+}
+
+tasks.withType(JavaCompile).configureEach {
+    options.release = 17
+    options.encoding = 'UTF-8'
+}
+
+test {
+    useJUnitPlatform()
+    testLogging {
+        events 'failed'
+        exceptionFormat 'short'
+    }
+    // Always re-run the tests, so a failing test can never hide behind a cached result.
+    outputs.upToDateWhen { false }
+    // "./gradlew score" runs the tests but carries on when some fail, so the score card always prints.
+    ignoreFailures = gradle.startParameter.taskNames.contains('score')
+}
+
+// ./gradlew score   runs the tests, then prints your team's score card.
+tasks.register('score', JavaExec) {
+    group = 'verification'
+    description = "Runs the tests and prints your team's score card"
+    dependsOn tasks.named('test')
+    classpath = sourceSets.main.runtimeClasspath
+    mainClass = 'scoring.Score'
+}
