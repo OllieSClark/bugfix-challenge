@@ -14,6 +14,15 @@ You need three things installed (the organisers will help if something goes wron
 2. **JDK 17 or newer**: check with `java -version`
 3. **VS Code** with the *Extension Pack for Java* (VS Code will offer it when you open this folder)
 
+Then tell Git who you are. You only do this once per laptop, and without it your first `git commit` fails with *"Please tell me who you are"*:
+
+```
+git config --global user.name "Your Name"
+git config --global user.email "you@example.com"
+```
+
+You don't need a GitHub account for this challenge, but it's worth making one at [github.com](https://github.com): it's where you'll keep your code for the rest of your degree. If you have one, use the same email above so your commits show up on your profile.
+
 You do **not** need to install Gradle. The project brings its own: use `./gradlew` (Mac/Linux, or Git Bash on Windows) or `gradlew.bat` (Windows Command Prompt; in PowerShell use `.\gradlew.bat`). The first run downloads Gradle and takes a minute or two, so run `./gradlew test` once before the event.
 
 ## Get the code
@@ -24,7 +33,20 @@ cd bugfix-challenge
 code .
 ```
 
+## Working as a team
+
+Everyone clones the code and works on their own laptop, but **only one laptop gets scored**. Commits you make on your laptop stay on your laptop, so:
+
+1. **Pick a submitter.** Their laptop is your team's entry, and only the submitter commits.
+2. **Split up the files.** Each person takes a different file in `src/main/java/challenge/` (`Stats`, `Scaler`, `Probability`, `DataSplit`) and works on its failing tests.
+3. **Hand your fixes to the submitter.** When a test goes green on your laptop, run `git diff` to show the submitter exactly what you changed. They make the same change, run the tests, and commit it.
+4. **Stay up to date.** `Scaler` uses `Stats`, so whoever works on `Scaler` should copy in each `Stats` fix as the submitter commits it.
+
+When time is up, the organisers score the submitter's laptop. Everything must be committed by then.
+
 ## Your first commit
+
+The submitter does this one:
 
 1. Open `TEAM.md` and fill in your **team name** and **member names**.
 2. Commit it:
@@ -42,7 +64,7 @@ Repeat until you run out of time or bugs:
 2. **Pick one failing test.** Find the code it is testing in `src/main/java/challenge/`.
 3. **Fix the bug** (one bug at a time).
 4. **Run the tests again.** Did it go green? Did anything else turn red?
-5. **Commit.** One fix, one commit, with a message that says what you fixed:
+5. **Commit** (submitter only). One fix, one commit, with a message that says what you fixed:
    ```
    git add -A
    git commit -m "Fix sum skipping the last element"
