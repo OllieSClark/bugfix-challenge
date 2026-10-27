@@ -23,7 +23,7 @@ git config --global user.email "you@example.com"
 
 You don't need a GitHub account for this challenge, but it's worth making one at [github.com](https://github.com): it's where you'll keep your code for the rest of your degree. If you have one, use the same email above so your commits show up on your profile.
 
-You do **not** need to install Gradle. The project brings its own: use `./gradlew` (Mac/Linux, or Git Bash on Windows) or `gradlew.bat` (Windows Command Prompt; in PowerShell use `.\gradlew.bat`). The first run downloads Gradle and takes a minute or two, so run `./gradlew test` once before the event.
+You do **not** need to install Gradle. The project brings its own: use `./gradlew` (Mac/Linux, or Git Bash on Windows) or `gradlew.bat` (Windows Command Prompt; in PowerShell use `.\gradlew.bat`). The first run downloads Gradle and takes a minute or two, so run `./gradlew test` as soon as you clone the repo.
 
 ## Get the code
 
@@ -38,11 +38,32 @@ code .
 Everyone clones the code and works on their own laptop, but **only one laptop gets scored**. Commits you make on your laptop stay on your laptop, so:
 
 1. **Pick a submitter.** Their laptop is your team's entry, and only the submitter commits.
-2. **Split up the files.** Each person takes a different file in `src/main/java/challenge/` (`Stats`, `Scaler`, `Probability`, `DataSplit`) and works on its failing tests.
+2. **Split up the bugs by experience.** Use the table in *Where to start* below so everyone has something they can fix, and make sure no two people work on the same method.
 3. **Hand your fixes to the submitter.** When a test goes green on your laptop, run `git diff` to show the submitter exactly what you changed. They make the same change, run the tests, and commit it.
 4. **Stay up to date.** `Scaler` uses `Stats`, so whoever works on `Scaler` should copy in each `Stats` fix as the submitter commits it.
 
 When time is up, the organisers score the submitter's laptop. Everything must be committed by then.
+
+## Where to start
+
+Not every bug is equally hard. Pick a row that matches your experience:
+
+| If you are... | Start with | File | Level |
+|---|---|---|---|
+| **New to coding** | `sum` | `Stats.java` | 1 |
+| | `max` | `Stats.java` | 1 |
+| | `birthdayCollision` | `Probability.java` | 3 |
+| **Have done some coding** | `median` | `Stats.java` | 2 |
+| | `minMax` | `Scaler.java` | 2 |
+| | `atLeastOne` | `Probability.java` | 3 |
+| | `trainTestSplit` | `DataSplit.java` | 3 |
+| **Confident** | `variance` | `Stats.java` | 2 |
+| | `choose` | `Probability.java` | 3 |
+
+- **New to coding?** Each bug in your rows is a small change to one or two lines. Ask your AI assistant to explain the method line by line *before* you change anything, then find the line that doesn't match the comment above the method.
+- `birthdayCollision` is Level 3, so it's worth 3 points, but it's no harder than the Level 1 bugs.
+- Some methods use others: `mean` uses `sum`, `minMax` uses `min` and `max`, and `zScores` uses `mean` and `stdDev`. A test can stay red until another person's fix lands, so get the beginner fixes committed early.
+- The confident person on each team: once you're done, go and help someone else.
 
 ## Your first commit
 
@@ -87,7 +108,21 @@ Check your score at any time:
 
 - Tests that already pass at the start don't score, but **breaking one costs you**.
 - Only commits made **after** the starting point count, and one giant commit at the end counts as one.
-- If two teams tie, the organisers run extra tests you haven't seen. Making the visible tests pass by special-casing them will not save you.
+- If two teams tie, the team that passes more **hidden tests** wins (see below).
+
+## Hidden tests (just like your coursework)
+
+The tests you can see are not the only tests. The organisers have a second, hidden set that checks the same methods with different data and with the edge cases: empty arrays, single values, negative numbers, very large numbers, and bad input that should throw an exception.
+
+This is how your coursework will be marked. You get some unit tests to check your work as you go, but the markers run more tests that you haven't seen. Code that only passes the visible tests, or special-cases them, loses marks.
+
+To do well on the hidden tests:
+
+- **Read the comment above each method.** That comment (its *Javadoc*) is the specification. The hidden tests check everything it promises, not just the parts the visible tests cover.
+- **Ask "what input would break this?"** An empty array? One value? All negative numbers? A number too big for an `int`?
+- **Fix the cause, not the symptom.** If your fix only works for the numbers in the visible test, it isn't a fix.
+
+The hidden tests run on the submitter's **committed** code, so commit everything before time is up.
 
 ## Rules
 
